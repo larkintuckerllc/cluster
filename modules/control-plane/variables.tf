@@ -33,11 +33,6 @@ variable "node_pool_auto_upgrade" {
   type        = bool
 }
 
-variable "release_channel" {
-  description = "Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the UNSPECIFIED channel."
-  type        = string
-}
-
 variable "services_secondary_range_name" {
   description = "The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one."
   type        = string
