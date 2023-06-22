@@ -8,11 +8,11 @@ terraform {
 }
 
 locals {
+  blue_version                     = "1.25.8-gke.500" # ONLY USED IF NODE_POOL_AUTO_UPGRADE IS FALSE
+  green_version                    = "1.25.8-gke.500" # ONLY USED IF NODE_POOL_AUTO_UPGRADE IS FALSE
   maintenance_exclusion_end_time   = "2024-01-01T00:00:00Z"
   maintenance_exclusion_start_time = "2023-06-01T00:00:00Z"
   min_master_version               = "1.26.3-gke.1000"
-  node_pool_auto_upgrade           = true             # TODO: MOVE TO VARIABLE
-  node_pool_version                = "1.25.8-gke.500" # ONLY USED IF NODE_POOL_AUTO_UPGRADE IS FALSE
   release_channel                  = "REGULAR"
 }
 
@@ -26,22 +26,23 @@ module "control_plane" {
   min_master_version               = local.min_master_version
   location                         = var.location
   name                             = var.name
-  node_pool_auto_upgrade           = local.node_pool_auto_upgrade
   release_channel                  = local.release_channel
   services_secondary_range_name    = var.services_secondary_range_name
   subnetwork                       = var.subnetwork
 }
 
 module "node_pool" {
-  for_each               = var.node_pool
-  source                 = "./modules/node-pool"
-  cluster                = var.name
-  location               = var.location
-  machine_type           = each.value["machine_type"]
-  name                   = each.key
-  node_pool_auto_upgrade = local.node_pool_auto_upgrade
-  node_pool_version      = local.node_pool_version
-  service_account        = module.control_plane.google_service_account_email
+  for_each        = var.node_pool
+  source          = "./modules/node-pool"
+  blue            = each.value["blue"]
+  blue_version    = local.blue_version
+  cluster         = var.name
+  green_version   = local.green_version
+  location        = var.location
+  machine_type    = each.value["machine_type"]
+  name            = each.key
+  auto_upgrade    = each.value["auto_upgrade"]
+  service_account = module.control_plane.google_service_account_email
 }
 
 provider "kubectl" {

@@ -16,6 +16,8 @@ variable "name" {
 variable "node_pool" {
   description = "The node pools"
   type = map(object({
+    auto_upgrade : bool
+    blue : bool # TRUE IS BLUE, FALSE IS GREEN; UNUSED IF AUTO_UPGRADE IS TRUE
     machine_type : string
   }))
 }
