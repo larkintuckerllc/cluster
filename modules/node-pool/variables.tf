@@ -38,11 +38,6 @@ variable "name" {
   type        = string
 }
 
-variable "node_pool_auto_upgrade" {
-  description = "Whether the nodes will be automatically upgraded."
-  type        = bool
-}
-
 variable "service_account" {
   description = "The Google Cloud Platform Service Account to be used by the node VMs."
   type        = string

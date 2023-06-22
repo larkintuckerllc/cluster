@@ -1,3 +1,8 @@
+variable "auto_upgrade" {
+  description = "Whether the nodes will be automatically upgraded."
+  type        = bool
+}
+
 variable "cluster_secondary_range_name" {
   description = "The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_ipv4_cidr_block can be used to automatically create a GKE-managed one."
   type        = string
@@ -26,11 +31,6 @@ variable "min_master_version" {
 variable "name" {
   description = "The name of the cluster, unique within the project and location."
   type        = string
-}
-
-variable "node_pool_auto_upgrade" {
-  description = "Whether the nodes will be automatically upgraded."
-  type        = bool
 }
 
 variable "services_secondary_range_name" {

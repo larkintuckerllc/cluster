@@ -19,11 +19,11 @@ data "google_client_config" "default" {}
 
 module "control_plane" {
   source                           = "./modules/control-plane"
+  auto_upgrade                     = var.auto_upgrade
   cluster_secondary_range_name     = var.cluster_secondary_range_name
   maintenance_exclusion_end_time   = local.maintenance_exclusion_end_time
   maintenance_exclusion_start_time = local.maintenance_exclusion_start_time
   min_master_version               = local.min_master_version
-  node_pool_auto_upgrade           = var.node_pool_auto_upgrade
   location                         = var.location
   name                             = var.name
   services_secondary_range_name    = var.services_secondary_range_name
@@ -31,17 +31,17 @@ module "control_plane" {
 }
 
 module "node_pool" {
-  for_each               = var.node_pool
-  source                 = "./modules/node-pool"
-  blue                   = each.value["blue"]
-  blue_version           = local.blue_version
-  cluster                = var.name
-  green_version          = local.green_version
-  location               = var.location
-  machine_type           = each.value["machine_type"]
-  name                   = each.key
-  node_pool_auto_upgrade = var.node_pool_auto_upgrade
-  service_account        = module.control_plane.google_service_account_email
+  for_each        = var.node_pool
+  source          = "./modules/node-pool"
+  auto_upgrade    = var.auto_upgrade
+  blue            = each.value["blue"]
+  blue_version    = local.blue_version
+  cluster         = var.name
+  green_version   = local.green_version
+  location        = var.location
+  machine_type    = each.value["machine_type"]
+  name            = each.key
+  service_account = module.control_plane.google_service_account_email
 }
 
 provider "kubectl" {
