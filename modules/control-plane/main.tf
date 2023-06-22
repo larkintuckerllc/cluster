@@ -43,7 +43,7 @@ resource "google_container_cluster" "default" {
       start_time     = var.maintenance_exclusion_start_time
       end_time       = var.maintenance_exclusion_end_time
       exclusion_options {
-        scope = var.node_pool_auto_upgrade ? "NO_MINOR_OR_NODE_UPGRADES" : "NO_MINOR_UPGRADES" # NO NODE_UPGRADES IS REDUNDANT BUT MORE EXPLICIT
+        scope = var.node_pool_auto_upgrade ? "NO_MINOR_UPGRADES" : "NO_MINOR_OR_NODE_UPGRADES" # NO NODE_UPGRADES IS REDUNDANT BUT MORE EXPLICIT
       }
     }
   }
