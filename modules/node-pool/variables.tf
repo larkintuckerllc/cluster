@@ -25,7 +25,7 @@ variable "node_pool_auto_upgrade" {
 
 variable "node_pool_version" {
   description = "The Kubernetes version for the nodes in this pool. Note that if this field and auto_upgrade are both specified, they will fight each other for what the node version should be, so setting both is highly discouraged. While a fuzzy version can be specified, it's recommended that you specify explicit versions as Terraform will see spurious diffs when fuzzy versions are used. See the google_container_engine_versions data source's version_prefix field to approximate fuzzy versions in a Terraform-compatible way."
-  type        = bool
+  type        = string
 }
 
 variable "service_account" {
