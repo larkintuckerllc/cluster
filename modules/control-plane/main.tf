@@ -50,7 +50,7 @@ resource "google_container_cluster" "default" {
   min_master_version = var.min_master_version
   network            = "default"
   release_channel {
-    channel = var.auto_upgrade ? "UNSPECIFIED" : "STABLE"
+    channel = var.auto_upgrade ? "STABLE" : "UNSPECIFIED"
   }
   remove_default_node_pool = true
   subnetwork               = var.subnetwork
