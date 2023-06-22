@@ -16,10 +16,14 @@ variable "name" {
 variable "node_pool" {
   description = "The node pools"
   type = map(object({
-    auto_upgrade : bool
-    blue : bool # TRUE IS BLUE, FALSE IS GREEN; UNUSED IF AUTO_UPGRADE IS TRUE
+    blue : bool # TRUE IS BLUE, FALSE IS GREEN; UNUSED IF NODE_POOL_AUTO_UPGRADE IS TRUE
     machine_type : string
   }))
+}
+
+variable "node_pool_auto_upgrade" {
+  description = "Whether the nodes will be automatically upgraded."
+  type        = bool
 }
 
 variable "services_secondary_range_name" {

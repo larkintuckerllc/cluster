@@ -28,6 +28,11 @@ variable "name" {
   type        = string
 }
 
+variable "node_pool_auto_upgrade" {
+  description = "Whether the nodes will be automatically upgraded."
+  type        = bool
+}
+
 variable "release_channel" {
   description = "Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the UNSPECIFIED channel."
   type        = string
