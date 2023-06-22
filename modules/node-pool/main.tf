@@ -26,5 +26,5 @@ resource "google_container_node_pool" "default" {
       mode = "GKE_METADATA"
     }
   }
-  version = var.node_pool_auto_upgrade ? null : var.blue ? var.blue_version : var.green_version
+  version = var.auto_upgrade ? null : var.blue ? var.blue_version : var.green_version
 }
