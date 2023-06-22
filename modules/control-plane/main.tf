@@ -34,16 +34,20 @@ resource "google_container_cluster" "default" {
     services_secondary_range_name = var.services_secondary_range_name
   }
   location = var.location
-  maintenance_policy {
-    daily_maintenance_window {
-      start_time = "00:00" # DEFAULT 4 HOUR WINDOW
-    }
-    maintenance_exclusion {
-      exclusion_name = "Prevent Upgrades"
-      start_time     = var.maintenance_exclusion_start_time
-      end_time       = var.maintenance_exclusion_end_time
-      exclusion_options {
-        scope = "NO_MINOR_UPGRADES"
+
+  dynamic "maintenance_policy" { # RELEASE_CHANNEL UNSPECIFIED NO SUPPORT FOR MAINTENANCE_POLICY
+    for_each = var.auto_upgrade ? list(true) : []
+    content {
+      daily_maintenance_window {
+        start_time = "00:00" # DEFAULT 4 HOUR WINDOW
+      }
+      maintenance_exclusion {
+        exclusion_name = "Prevent Upgrades"
+        start_time     = var.maintenance_exclusion_start_time
+        end_time       = var.maintenance_exclusion_end_time
+        exclusion_options {
+          scope = "NO_MINOR_UPGRADES"
+        }
       }
     }
   }
