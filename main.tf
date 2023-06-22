@@ -10,10 +10,10 @@ terraform {
 locals {
   blue_version                     = "1.25.8-gke.500" # ONLY USED IF NODE_POOL_AUTO_UPGRADE IS FALSE
   green_version                    = "1.25.8-gke.500" # ONLY USED IF NODE_POOL_AUTO_UPGRADE IS FALSE
-  maintenance_exclusion_end_time   = "2024-01-01T00:00:00Z"
+  maintenance_exclusion_end_time   = "2023-10-01T00:00:00Z" # NO MORE THAN 180 DAYS
   maintenance_exclusion_start_time = "2023-06-01T00:00:00Z"
-  min_master_version               = "1.26.3-gke.1000"
-  release_channel                  = "REGULAR"
+  min_master_version               = "1.25.8-gke.500"
+  release_channel                  = "STABLE" # CANNOT USE REGULAR AND NODE POOLS WITH NO AUTO_UPGRADE
 }
 
 data "google_client_config" "default" {}
