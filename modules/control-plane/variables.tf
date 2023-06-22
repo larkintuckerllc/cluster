@@ -8,8 +8,33 @@ variable "location" {
   type        = string
 }
 
+variable "maintenance_exclusion_end_time" {
+  description = "Exceptions to maintenance window. Non-emergency maintenance should not occur in these windows."
+  type        = string
+}
+
+variable "maintenance_exclusion_start_time" {
+  description = "Exceptions to maintenance window. Non-emergency maintenance should not occur in these windows."
+  type        = string
+}
+
+variable "min_master_version" {
+  description = "The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster's version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version)."
+  type        = string
+}
+
 variable "name" {
   description = "The name of the cluster, unique within the project and location."
+  type        = string
+}
+
+variable "node_pool_auto_upgrade" {
+  description = "Whether the nodes will be automatically upgraded."
+  type        = bool
+}
+
+variable "release_channel" {
+  description = "Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the UNSPECIFIED channel."
   type        = string
 }
 

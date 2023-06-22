@@ -12,7 +12,8 @@ resource "google_container_node_pool" "default" {
   cluster  = var.cluster
   location = var.location
   management {
-    auto_upgrade = true
+    auto_repair  = true # FORCED TO ADD AS DEFAULTS TO FALSE
+    auto_upgrade = var.node_pool_auto_upgrade
   }
   node_count = 1
   node_config {
@@ -25,4 +26,5 @@ resource "google_container_node_pool" "default" {
       mode = "GKE_METADATA"
     }
   }
+  version = var.node_pool_auto_upgrade ? null : var.node_pool_version
 }

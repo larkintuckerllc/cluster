@@ -7,13 +7,6 @@ terraform {
   }
 }
 
-locals {
-  maintenance_exclusion_end_time   = "2024-01-01T00:00:00Z"
-  maintenance_exclusion_start_time = "2023-06-01T00:00:00Z"
-  min_master_version               = "1.26.3-gke.1000"
-  release_channel                  = "REGULAR"
-}
-
 data "google_client_config" "default" {}
 
 resource "google_service_account" "default" {
@@ -47,17 +40,17 @@ resource "google_container_cluster" "default" {
     }
     maintenance_exclusion {
       exclusion_name = "Prevent Upgrades"
-      start_time     = local.maintenance_exclusion_start_time
-      end_time       = local.maintenance_exclusion_end_time
+      start_time     = var.maintenance_exclusion_start_time
+      end_time       = var.maintenance_exclusion_end_time
       exclusion_options {
-        scope = "NO_MINOR_UPGRADES"
+        scope = var.node_pool_auto_upgrade ? "NO_MINOR_OR_NODE_UPGRADES" : "NO_MINOR_UPGRADES" # NO NODE_UPGRADES IS REDUNDANT BUT MORE EXPLICIT
       }
     }
   }
-  min_master_version = local.min_master_version
+  min_master_version = var.min_master_version
   network            = "default"
   release_channel {
-    channel = local.release_channel
+    channel = var.release_channel
   }
   remove_default_node_pool = true
   subnetwork               = var.subnetwork
