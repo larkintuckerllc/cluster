@@ -7,6 +7,13 @@ terraform {
   }
 }
 
+locals {
+  maintenance_exclusion_end_time   = "2024-01-01T00:00:00Z"
+  maintenance_exclusion_start_time = "2023-06-01T00:00:00Z"
+  min_master_version               = "1.26.3-gke.1000"
+  release_channel                  = "REGULAR"
+}
+
 data "google_client_config" "default" {}
 
 resource "google_service_account" "default" {
@@ -33,8 +40,25 @@ resource "google_container_cluster" "default" {
     cluster_secondary_range_name  = var.cluster_secondary_range_name
     services_secondary_range_name = var.services_secondary_range_name
   }
-  location                 = var.location
-  network                  = "default"
+  location = var.location
+  maintenance_policy {
+    daily_maintenance_window {
+      start_time = "00:00" # DEFAULT 4 HOUR WINDOW
+    }
+    maintenance_exclusion {
+      exclusion_name = "Prevent Upgrades"
+      start_time     = local.maintenance_exclusion_start_time
+      end_time       = local.maintenance_exclusion_end_time
+      exclusion_options {
+        scope = "NO_MINOR_UPGRADES"
+      }
+    }
+  }
+  min_master_version = local.min_master_version
+  network            = "default"
+  release_channel {
+    channel = local.release_channel
+  }
   remove_default_node_pool = true
   subnetwork               = var.subnetwork
   workload_identity_config {
